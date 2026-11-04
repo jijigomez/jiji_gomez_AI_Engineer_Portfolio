@@ -1,0 +1,53 @@
+/* ===== Neon cursor — paste at the END of your stylesheet ===== */
+:root { --neon: var(--accent); }
+
+.neon-cursor-enabled,
+.neon-cursor-enabled * { cursor: none !important; }
+.neon-cursor-enabled input,
+.neon-cursor-enabled textarea { cursor: text !important; }
+
+.neon-cursor { position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.25s ease; }
+.neon-cursor-visible .neon-cursor { opacity: 1; }
+.neon-cursor-trail { position: fixed; inset: 0; }
+
+.neon-cursor-dot,
+.neon-cursor-ring { position: fixed; top: 0; left: 0; will-change: transform; }
+
+.neon-cursor-dot::before,
+.neon-cursor-ring::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, border-width 0.2s ease;
+}
+
+.neon-cursor-dot::before {
+  width: 8px; height: 8px;
+  background: #fff;
+  box-shadow:
+    0 0 6px 1px var(--neon),
+    0 0 14px 4px var(--neon),
+    0 0 28px 8px color-mix(in srgb, var(--neon) 45%, transparent);
+}
+
+.neon-cursor-ring::before {
+  width: 34px; height: 34px;
+  border: 1.5px solid var(--neon);
+  box-shadow: 0 0 10px var(--neon), inset 0 0 10px color-mix(in srgb, var(--neon) 55%, transparent);
+  opacity: 0.85;
+}
+
+.neon-cursor-hover .neon-cursor-ring::before {
+  width: 54px; height: 54px;
+  background: color-mix(in srgb, var(--neon) 12%, transparent);
+}
+.neon-cursor-hover .neon-cursor-dot::before { width: 5px; height: 5px; }
+.neon-cursor-press .neon-cursor-ring::before { width: 24px; height: 24px; border-width: 3px; }
+
+@media (pointer: coarse) { .neon-cursor { display: none; } }
+
+/* Your reduced-motion block removes transitions; this keeps the cursor visible */
+@media (prefers-reduced-motion: reduce) {
+  .neon-cursor { transition: none; }
+}
